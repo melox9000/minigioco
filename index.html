@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Gioco</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nes.css/2.3.0/css/nes.min.css">
+    <link rel="stylesheet" href="static/index.css">
+    
+</head>
+<body>
+    <h1 class="nes-text is-primary">Mini Gioco</h1>
+    <div id="punteggio" class="nes-text">Punteggio: 0</div>
+    <div id="tempo" class="nes-text">Tempo rimasto: 30s</div>
+    <button id="inizia-gioco" class="nes-btn is-success">Inizia Gioco</button>
+    <div id="contenitore-gioco"></div>
+    <div id="messaggio-finale" class="nes-text"></div>
+
+    <script>
+        const dimensioneGriglia = 3;
+        const contenitoreGioco = document.getElementById('contenitore-gioco');
+        const visualizzaPunteggio = document.getElementById('punteggio');
+        const visualizzaTempo = document.getElementById('tempo');
+        const bottoneInizia = document.getElementById('inizia-gioco');
+        const messaggioFinale = document.getElementById('messaggio-finale');
+        let punteggio = 0;
+        let tempoRimanente;
+        let intervalloGioco;
+
+        
+        function creaGriglia() {
+            for (let i = 0; i < dimensioneGriglia * dimensioneGriglia; i++) {
+                const cella = document.createElement('div');
+                cella.classList.add('cella');
+                const bottone = document.createElement('button');
+                bottone.textContent = 'Clicca';
+                cella.appendChild(bottone);
+                contenitoreGioco.appendChild(cella);
+
+                bottone.addEventListener('click', () => {
+                    if (bottone.classList.contains('attivo')) {
+                        punteggio++;
+                        visualizzaPunteggio.textContent = `Punteggio: ${punteggio}`;
+                        bottone.classList.remove('attivo');
+                    }
+                });
+            }
+        }
+
+        
+        function avviaGioco() {
+            punteggio = 0;
+            tempoRimanente = Math.floor(Math.random() * (25 - 10 + 1)) + 10; 
+            visualizzaPunteggio.textContent = `Punteggio: ${punteggio}`;
+            visualizzaTempo.textContent = `Tempo rimasto: ${tempoRimanente}s`;
+            messaggioFinale.textContent = '';
+            bottoneInizia.disabled = true;
+
+            intervalloGioco = setInterval(() => {
+                tempoRimanente--;
+                visualizzaTempo.textContent = `Tempo rimasto: ${tempoRimanente}s`;
+
+                if (tempoRimanente <= 0) {
+                    terminaGioco();
+                } else {
+                    attivaPulsanteCasuale();
+                }
+            }, 1000);
+        }
+
+        
+        function terminaGioco() {
+            clearInterval(intervalloGioco);
+            bottoneInizia.disabled = false;
+            const pulsanti = document.querySelectorAll('.cella button');
+            pulsanti.forEach(bottone => bottone.classList.remove('attivo'));
+            messaggioFinale.textContent = `Gioco finito! Punteggio finale: ${punteggio}`;
+        }
+
+        
+        function attivaPulsanteCasuale() {
+            const pulsanti = document.querySelectorAll('.cella button');
+            pulsanti.forEach(bottone => bottone.classList.remove('attivo'));
+            const indiceCasuale = Math.floor(Math.random() * pulsanti.length);
+            pulsanti[indiceCasuale].classList.add('attivo');
+        }
+
+        bottoneInizia.addEventListener('click', avviaGioco);
+
+        creaGriglia();
+    </script>
+</body>
+</html>

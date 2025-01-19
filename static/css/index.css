@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #212529;
+    color: white;
+}
+
+#contenitore-gioco {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 10px;
+    margin: 20px 0;
+}
+
+.cella {
+    width: 100px;
+    height: 100px;
+    background-color: #3a3a3a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    border-radius: 5px;
+}
+
+.cella button {
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: #00d1b2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.cella button.attivo {
+    display: block;
+}
+
+#punteggio, #tempo {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+#inizia-gioco {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+#messaggio-finale {
+    margin-top: 20px;
+    font-size: 24px;
+    color: #00d1b2;
+}
